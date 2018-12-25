@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27703.2042
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HTML2PDF-netcore", "HTML2PDF-netcore\HTML2PDF-netcore.csproj", "{F0F10050-4261-43A5-BFB5-0244E731662B}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{F0F10050-4261-43A5-BFB5-0244E731662B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F0F10050-4261-43A5-BFB5-0244E731662B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F0F10050-4261-43A5-BFB5-0244E731662B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F0F10050-4261-43A5-BFB5-0244E731662B}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {D8453D68-72DE-4F9D-BDFF-AB4FE1C1CE19}
+	EndGlobalSection
+EndGlobal
