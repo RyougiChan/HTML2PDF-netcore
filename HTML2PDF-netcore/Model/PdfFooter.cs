@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 namespace HTML2PDF_netcore.Model
 {
     /// <summary>
-    /// Footer message of PDF file
+    /// Footer message of PDF file | PDF 页脚处理器
     /// 
     /// [itext-7 examples](<seealso cref="https://developers.itextpdf.com/content/itext-7-examples/converting-html-pdf/pdfhtml-header-and-footer-example"/>)
     /// </summary>

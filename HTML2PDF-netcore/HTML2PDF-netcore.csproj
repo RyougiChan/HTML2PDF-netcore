@@ -5,10 +5,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="wwwroot\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="itext7" Version="7.1.4" />
     <PackageReference Include="itext7.pdfhtml" Version="2.1.1" />
     <PackageReference Include="Microsoft.AspNetCore.App" />

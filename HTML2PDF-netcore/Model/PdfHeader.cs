@@ -12,7 +12,7 @@ using System.Collections.Generic;
 namespace HTML2PDF_netcore.Model
 {
     /// <summary>
-    /// Header message of PDF file
+    /// Header message of PDF file | PDF 页头处理器
     /// 
     /// [itext-7 examples](<seealso cref="https://developers.itextpdf.com/content/itext-7-examples/converting-html-pdf/pdfhtml-header-and-footer-example"/>)
     /// </summary>
@@ -26,7 +26,7 @@ namespace HTML2PDF_netcore.Model
         /// </summary>
         /// <param name="header">
         /// Key-Value pair collection, Header body. 
-        /// Keys includes: text, fontSize, source, width, left and top.
+        /// Keys includes: `text`, `fontSize`, `source`, `width`, `left` and `top`.
         /// The first two properties are for Header's Text.
         /// The following four properties are for Header's Image, LOGO as default.
         /// </param>
