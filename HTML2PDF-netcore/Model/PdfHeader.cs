@@ -1,13 +1,16 @@
 ﻿using iText.IO.Image;
+using iText.Kernel.Colors;
 using iText.Kernel.Events;
 using iText.Kernel.Font;
 using iText.Kernel.Geom;
 using iText.Kernel.Pdf;
 using iText.Kernel.Pdf.Canvas;
 using iText.Layout;
+using iText.Layout.Element;
 using iText.Layout.Properties;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace HTML2PDF_netcore.Model
 {
@@ -39,30 +42,68 @@ namespace HTML2PDF_netcore.Model
 
         public void HandleEvent(Event evt)
         {
-            // Retrieve document and
+            // Retrieve document | 获取 PDF 文档
             PdfDocumentEvent docEvent = (PdfDocumentEvent)evt;
             PdfDocument pdf = docEvent.GetDocument();
             PdfPage page = docEvent.GetPage();
+            // Header is generated at the very start of a page generation | 页头生成的时候位于页面生成最先
+            // So `pdfTotalPageNumber == currentPageNumber` will be `true` forever | 故 `pdfTotalPageNumber == currentPageNumber` 恒成立
+            int pdfTotalPageNumber = pdf.GetNumberOfPages();
+            int currentPageNumber = pdf.GetPageNumber(page);
+
+            // do not add header on cover | 封面不加头部
+            if (currentPageNumber == 1)
+            {
+                return;
+            }
+
+            // Width of text in header | 文字宽度
+            float textWidth = pdfFont.GetWidth(header["text"].ToString(), Convert.ToSingle(header["fontSize"]));
+            int[] rgb = header["fontColor"].ToString().Split(',', StringSplitOptions.RemoveEmptyEntries).Select(x => Convert.ToInt32(x.Trim())).ToArray();
+
+            //// Doc parameters | 文档参数
             Rectangle pageSize = page.GetPageSize();
             PdfCanvas pdfCanvas = new PdfCanvas(
                     page.GetLastContentStream(), page.GetResources(), pdf);
             Canvas canvas = new Canvas(pdfCanvas, pdf, pageSize);
-            canvas.SetFontSize(Convert.ToSingle(header["fontSize"]));
-            canvas.SetFont(pdfFont);
-            // Write image
+            canvas.SetFontSize(Convert.ToSingle(header["fontSize"]))
+                .SetFont(pdfFont)
+                .SetFontColor(new DeviceRgb(rgb[0], rgb[1], rgb[2]));
+
+            // LOGO
             string IMG = header["source"].ToString();
             ImageData img = ImageDataFactory.Create(IMG);
-            iText.Layout.Element.Image imgModel = new iText.Layout.Element.Image(img);
+            Image imgModel = new Image(img);
             imgModel.SetWidth(Convert.ToSingle(header["width"]));
-            imgModel.SetMarginLeft(Convert.ToSingle(header["left"]));
-            imgModel.SetMarginTop(Convert.ToSingle(header["top"]));
+
+            // Setup text/LOGO and position 文字/LOGO及位置
+            string headerText = header["text"].ToString();
+            float[] headerTextPos = new float[2];
+            float[] headerImgPos = new float[2];
+            TextAlignment alignment = TextAlignment.CENTER;
+
+            if (currentPageNumber % 2 == 0)
+            {
+                // Align left | 左对齐
+                headerTextPos[0] = Convert.ToSingle(header["left"]) + Convert.ToSingle(header["width"]) + 4.5f;
+                headerImgPos[0] = Convert.ToSingle(header["left"]);
+                alignment = TextAlignment.LEFT;
+            }
+            else
+            {
+                // Align right | 右对齐
+                headerTextPos[0] = pageSize.GetWidth() - 36;
+                headerImgPos[0] = pageSize.GetWidth() - Convert.ToSingle(header["left"]) - textWidth - Convert.ToSingle(header["width"]);
+                alignment = TextAlignment.RIGHT;
+            }
+            headerTextPos[1] = pageSize.GetTop() - 37;
+            headerImgPos[1] = Convert.ToSingle(header["top"]);
+
+            imgModel.SetMarginLeft(headerImgPos[0]);
+            imgModel.SetMarginTop(headerImgPos[1]);
             canvas.Add(imgModel);
-            // Write text at position
-            // TODO: change the text content for display
-            string displayText = header["text"] + " - " + pdf.GetPageNumber(page);
-            canvas.ShowTextAligned(displayText,
-                        pageSize.GetWidth() - 36,
-                        pageSize.GetTop() - 30, TextAlignment.RIGHT);
+
+            canvas.ShowTextAligned(headerText, headerTextPos[0], headerTextPos[1], alignment);
         }
     }
 }
