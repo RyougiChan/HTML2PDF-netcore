@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using HTML2PDF_netcore.Model;
+using HTML2PDF_netcore.Plugins;
 using iText.Html2pdf;
 using iText.Html2pdf.Attach.Impl;
 using iText.IO.Font;
@@ -13,7 +14,9 @@ using iText.Kernel.Font;
 using iText.Kernel.Geom;
 using iText.Kernel.Pdf;
 using iText.Layout;
+using iText.Layout.Element;
 using iText.Layout.Font;
+using iText.Layout.Properties;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -184,8 +187,27 @@ namespace HTML2PDF_netcore.Controllers
             #endregion
 
             // Start convertion | 开始转化
-            Document document =
-                HtmlConverter.ConvertToDocument(pdfHtmlString, pdfDoc, properties);
+            //Document document =
+            //    HtmlConverter.ConvertToDocument(pdfHtmlString, pdfDoc, properties);
+
+            IList<IElement> elements = HtmlConverter.ConvertToElements(pdfHtmlString, properties);
+            Document document = new Document(pdfDoc);
+            CJKSplitCharacters splitCharacters = new CJKSplitCharacters();
+            document.SetFontProvider(fp);
+            document.SetSplitCharacters(splitCharacters);
+            document.SetProperty(Property.SPLIT_CHARACTERS, splitCharacters);
+            foreach (IElement e in elements)
+            {
+                try
+                {
+                    document.Add((AreaBreak)e);
+                }
+                catch
+                {
+                    document.Add((IBlockElement)e);
+                }
+            }
+
             // Close and release document | 关闭并释放文档资源
             document.Close();
 

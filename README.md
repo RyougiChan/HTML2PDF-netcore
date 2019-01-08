@@ -31,8 +31,8 @@ pm> Install-Package itext7.pdfhtml -Version 2.1.1
 ```
 
 - API
-  - [Create](https://localhost:5001/api/pdf/create?pdfHtmlString=&saveName=)
-    - uri: https://localhost:5001/api/pdf/create?pdfHtmlString=&saveName=
+  - [Create](http://localhost:5000/api/pdf/create?pdfHtmlString=&saveName=)
+    - uri: http://localhost:5000/api/pdf/create?pdfHtmlString=&saveName=
     - method: GET
     - params:
 
@@ -40,8 +40,8 @@ pm> Install-Package itext7.pdfhtml -Version 2.1.1
         | ------------- | ------ | ------- |
         | pdfHtmlString | string | HTML document in string     |
         | saveName      | string | The name of PDF to be saved |
-  - [TestCreate](https://localhost:5001/api/pdf/testcreate)
-    > The test method for API [Create](https://localhost:5001/api/pdf/create?pdfHtmlString=&saveName=). You will get a pdf created using the existed HTML string by calling this.
+  - [TestCreate](http://localhost:5000/api/pdf/testcreate)
+    > The test method for API [Create](http://localhost:5000/api/pdf/create?pdfHtmlString=&saveName=). You will get a pdf created using the existed HTML string by calling this.
 
 ## Declaration
 
