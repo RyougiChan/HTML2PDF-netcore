@@ -43,6 +43,9 @@ pm> Install-Package itext7.pdfhtml -Version 2.1.1
   - [TestCreate](http://localhost:5000/api/pdf/testcreate)
     > The test method for API [Create](http://localhost:5000/api/pdf/create?pdfHtmlString=&saveName=). You will get a pdf created using the existed HTML string by calling this.
 
+    - If you are using a machine with Unix system, the generated PDF file can be found at path `/data/webroot/pdf/`.
+    - If you are using a machine with Windows system, the generated PDF file **may** be found at path `D:\pdf`(If disk `D` exist).
+
 ## Declaration
 
 - This project is license by [GNU GENERAL PUBLIC LICENSE](LICENSE).
