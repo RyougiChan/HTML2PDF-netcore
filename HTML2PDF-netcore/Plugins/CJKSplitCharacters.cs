@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using iText.IO.Font.Otf;
+using iText.IO.Util;
 using iText.Layout.Splitting;
 
 namespace HTML2PDF_netcore.Plugins
@@ -10,6 +12,7 @@ namespace HTML2PDF_netcore.Plugins
     /// </summary>
     public class CJKSplitCharacters : ISplitCharacters
     {
+        static ISplitCharacters defaultSplitCharacters = new DefaultSplitCharacters();
         // line of text cannot start or end with this character
         static char u2060 = '\u2060';   //       - ZERO WIDTH NO BREAK SPACE
 
@@ -103,6 +106,7 @@ namespace HTML2PDF_netcore.Plugins
           u30fe, u309d, u309e, u3005, u30fc, u2019, u201d, u3015, uff3d, uff5d, u3009, u300b, u300f, u3011, u00b0,
           u2032, u2033, u2103, u00a2, uff05, u2030, u3041, u3043, u3045, u3047, u3049, u3063, u3083, u3085, u3087,
           u308e, u30a1, u30a3, u30a5, u30a7, u30a9, u30c3, u30e3, u30e5, u30e7, u30ee, u30f5, u30f6, u2060};
+        static HashSet<char> NOT_BEGIN_CHARACTERS_SET = new HashSet<char>(NOT_BEGIN_CHARACTERS);
 
         // a line of text cannot end with any following characters in NOT_ENDING_CHARACTERS[]
         static char u0024 = '\u0024';   //  $   - DOLLAR SIGN
@@ -128,6 +132,7 @@ namespace HTML2PDF_netcore.Plugins
 
         static char[] NOT_ENDING_CHARACTERS = new char[]{u0024, u0028, u005b, u007b, u00a3, u00a5, u201c, u2018, u3008,
           u300a, u300c, u300e, u3010, u3014, uff62, uff08, uff3b, uff5b, uffe5, uff04, u2060};
+        static HashSet<char> NOT_ENDING_CHARACTERS_SET = new HashSet<char>(NOT_ENDING_CHARACTERS);
 
         /// <summary>
         /// 
@@ -143,11 +148,29 @@ namespace HTML2PDF_netcore.Plugins
             }
             int charCode = text.Get(glyphPos).GetUnicode();
 
-            if (NOT_BEGIN_CHARACTERS.Contains((char)charCode))
+            if (NOT_ENDING_CHARACTERS_SET.Contains((char)charCode))
             {
                 return false;
             }
-            return new DefaultSplitCharacters().IsSplitCharacter(text, glyphPos);
+
+            // Look ahead for the next non-whitespace character and check it not to be in NOT_BEGIN_CHARACTERS list
+            for (int i = 1; glyphPos + i < text.end; i++)
+            {
+                if (!text.Get(glyphPos + i).HasValidUnicode())
+                {
+                    break;
+                }
+                if (!TextUtil.IsSpaceOrWhitespace(text.Get(glyphPos + i)))
+                {
+                    if (NOT_BEGIN_CHARACTERS_SET.Contains((char)text.Get(glyphPos + i).GetUnicode()))
+                    {
+                        return false;
+                    }
+                    break;
+                }
+            }
+
+            return defaultSplitCharacters.IsSplitCharacter(text, glyphPos);
         }
     }
 }
