@@ -40,11 +40,14 @@ pm> Install-Package itext7.pdfhtml -Version 2.1.1
         | ------------- | ------ | ------- |
         | pdfHtmlString | string | HTML document in string     |
         | saveName      | string | The name of PDF to be saved |
-  - [TestCreate](http://localhost:5000/api/pdf/testcreate)
-    - uri: http://localhost:5000/api/pdf/testcreate
-    - method: GET
 
-    > The test method for API [Create](http://localhost:5000/api/pdf/create?pdfHtmlString=&saveName=). You will get a pdf created using the existed HTML string as follows by calling this.
+    - Example:
+
+    `http://localhost:5000/api/pdf/create?pdfHtmlString=<div%20class="main"%20style="margin:%2030px%200;">DHCPスヌーピングをサポートし、DHCPサーバを設定し、DHCPサーバの適合性を保証します。</div>&saveName=test`
+
+  - [TestCreate](http://localhost:5000/api/pdf/testcreate)
+
+    > The test method for API [Create](http://localhost:5000/api/pdf/create?pdfHtmlString=&saveName=). You will get a pdf created using the existed HTML string(parameter `pdfHtmlString` in [Create](http://localhost:5000/api/pdf/create?pdfHtmlString=&saveName=)) as follows by calling this.
 
     ```html
     <div class="main" style="margin: 30px 0;">
@@ -52,6 +55,8 @@ pm> Install-Package itext7.pdfhtml -Version 2.1.1
     </div>
     ```
 
+    - uri: http://localhost:5000/api/pdf/testcreate
+    - method: GET
     - If you are using a machine with Unix system, the generated PDF file can be found at path `/data/webroot/pdf/`.
     - If you are using a machine with Windows system, the generated PDF file **may** be found at path `D:\pdf`(If disk `D` exist).
 
