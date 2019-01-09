@@ -1,5 +1,4 @@
-﻿using iText.IO.Image;
-using iText.Kernel.Colors;
+﻿using iText.Kernel.Colors;
 using iText.Kernel.Events;
 using iText.Kernel.Font;
 using iText.Kernel.Geom;
@@ -11,7 +10,6 @@ using iText.Layout.Properties;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace HTML2PDF_netcore.Model
 {
@@ -44,7 +42,7 @@ namespace HTML2PDF_netcore.Model
 
         public void HandleEvent(Event evt)
         {
-            //Retrieve document and
+            // Retrieve document | 获取 PDF 文档
             PdfDocumentEvent docEvent = (PdfDocumentEvent)evt;
             PdfDocument pdf = docEvent.GetDocument();
             PdfPage page = docEvent.GetPage();
@@ -52,10 +50,10 @@ namespace HTML2PDF_netcore.Model
             int currentPageNumber = pdf.GetPageNumber(page);
 
             // Do not add footer on cover and back cover | 封面和封底不加
-            if (currentPageNumber == 1 || currentPageNumber == pdfTotalPageNumber)
-            {
-                return;
-            }
+            //if (currentPageNumber == 1 || currentPageNumber == pdfTotalPageNumber)
+            //{
+            //    return;
+            //}
 
             // Width of text in footer | 文字宽度
             float textWidth = pdfFont.GetWidth(footer["text"].ToString(), Convert.ToSingle(footer["fontSize"]));

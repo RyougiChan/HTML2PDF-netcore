@@ -52,10 +52,10 @@ namespace HTML2PDF_netcore.Model
             int currentPageNumber = pdf.GetPageNumber(page);
 
             // do not add header on cover | 封面不加头部
-            if (currentPageNumber == 1)
-            {
-                return;
-            }
+            //if (currentPageNumber == 1)
+            //{
+            //    return;
+            //}
 
             // Width of text in header | 文字宽度
             float textWidth = pdfFont.GetWidth(header["text"].ToString(), Convert.ToSingle(header["fontSize"]));
