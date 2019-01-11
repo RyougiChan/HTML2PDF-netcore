@@ -45,6 +45,21 @@ pm> Install-Package itext7.pdfhtml -Version 2.1.1
 
     `http://localhost:5000/api/pdf/create?pdfHtmlString=<div%20class="main"%20style="margin:%2030px%200;">DHCPスヌーピングをサポートし、DHCPサーバを設定し、DHCPサーバの適合性を保証します。</div>&saveName=test`
 
+  - [CreateFromHtml](http://localhost:5000/api/pdf/createfromhtml?htmlFileName=)
+
+    > Create PDF files using HTML file in path `/wwwroot/src/html/`. If parameter `htmlFileName` is given, it create PDF file using this specific HTML file, otherwise using **all** HTML files in the path(create multiple PDF files).
+
+    - uri: http://localhost:5000/api/pdf/createfromhtml?htmlFileName=
+    - method: GET
+    - params:
+
+        |      name     |  type  | meaning |
+        | ------------- | ------ | ------- |
+        | htmlFileName  | string | (optional)HTML document full-name in path `/wwwroot/src/html/` |
+    - Example:
+
+    `http://localhost:5000/api/pdf/createfromhtml?htmlFileName=forTest.html`
+
   - [TestCreate](http://localhost:5000/api/pdf/testcreate)
 
     > The test method for API [Create](http://localhost:5000/api/pdf/create?pdfHtmlString=&saveName=). You will get a pdf created using the existed HTML string(parameter `pdfHtmlString` in [Create](http://localhost:5000/api/pdf/create?pdfHtmlString=&saveName=)) as follows by calling this.

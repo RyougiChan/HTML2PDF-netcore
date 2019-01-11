@@ -29,6 +29,7 @@ namespace HTML2PDF_netcore.Controllers
         public IConfiguration Configuration;
         public IHostingEnvironment Host;
         OperatingSystem osInfo = Environment.OSVersion;
+        static string htmlSourcePath;
         #endregion
 
         #region Constructor
@@ -40,6 +41,55 @@ namespace HTML2PDF_netcore.Controllers
         #endregion
 
         #region Public methods
+        /// <summary>
+        /// To create and save new PDF file via given HTML file in folder /wwwroot/src/html/.
+        /// 通过给定的 HTML 字符串生成并保存 PDF 文件
+        /// </summary>
+        /// <param name="htmlFileName"></param>
+        /// <returns></returns>
+        [Route("createfromhtml")]
+        public IActionResult CreateFromHTML(string htmlFileName)
+        {
+            if (null == htmlSourcePath) htmlSourcePath = Host.WebRootPath + "/src/html/";
+            IActionResult result = null;
+            string[] htmlFiles;
+            string htmlString;
+            if (string.IsNullOrEmpty(htmlFileName))
+            {
+                htmlFiles = Directory.GetFiles(htmlSourcePath);
+            }
+            else
+            {
+                htmlString = GetHtmlStringFromFile(htmlSourcePath + htmlFileName);
+               
+                result = Create(htmlString, htmlFileName.Split('.')[0]);
+                return result;
+            }
+            StringBuilder resultStringBuilder = new StringBuilder();
+            foreach(string htmlFile in htmlFiles)
+            {
+                htmlFileName = htmlFile.Replace(htmlSourcePath, "");
+                htmlString = GetHtmlStringFromFile(htmlFile);
+                ContentResult tmpResult = (ContentResult)Create(htmlString, htmlFileName.Split('.')[0]);
+                resultStringBuilder.Append(string.Format("{0} with HTML file {1}\r\n", tmpResult.Content.Equals("SUCCESS") ? "success" : "fail", htmlFileName));
+            }
+            return Content(resultStringBuilder.ToString());
+        }
+
+        private string GetHtmlStringFromFile(string path)
+        {
+            if (!System.IO.File.Exists(path))
+            {
+                return null;
+            }
+            string htmlString = string.Empty;
+            using (StreamReader htmlReader = new StreamReader(new FileStream(path, FileMode.Open)))
+            {
+                htmlString = htmlReader.ReadToEnd();
+            }
+            return htmlString;
+        }
+
         /// <summary>
         /// To create and save new PDF file via given HTML string.
         /// 通过给定的 HTML 字符串生成并保存 PDF 文件
