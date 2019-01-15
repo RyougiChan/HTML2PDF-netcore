@@ -59,6 +59,8 @@ pm> Install-Package itext7.pdfhtml -Version 2.1.1
     - Example:
 
     `http://localhost:5000/api/pdf/createfromhtml?htmlFileName=forTest.html`
+    
+    - The generated PDF files will be located in the same path `/wwwroot/src/html/`.
 
   - [TestCreate](http://localhost:5000/api/pdf/testcreate)
 
